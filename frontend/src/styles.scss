@@ -1,0 +1,107 @@
+@use '@angular/material' as mat;
+
+// ---------------------------------------------------------------------------
+// Material 3 theme
+// ---------------------------------------------------------------------------
+// A single seed palette (a cool, trustworthy slate-blue - appropriate for a
+// financial/back-office reporting tool) drives the whole M3 color system via
+// mat.theme(). Colors are emitted as CSS light-dark() custom properties, so
+// the app automatically follows the OS/browser color-scheme preference with
+// zero extra JS - and the manual toggle in the toolbar just flips the same
+// `color-scheme` property on <html> for people who want to override it.
+html {
+  @include mat.theme(
+    (
+      color: (
+        theme-type: light,
+        primary: mat.$azure-palette,
+        tertiary: mat.$violet-palette,
+      ),
+      typography: (
+        plain-family: 'Roboto',
+        brand-family: 'Roboto',
+        bold-weight: 700,
+        medium-weight: 500,
+        regular-weight: 400,
+      ),
+      density: -1,
+    )
+  );
+  color-scheme: light dark;
+}
+
+html.dark-theme {
+  @include mat.theme(
+    (
+      color: (
+        theme-type: dark,
+        primary: mat.$azure-palette,
+        tertiary: mat.$violet-palette,
+      ),
+    )
+  );
+  color-scheme: dark;
+}
+
+html.light-theme {
+  color-scheme: light;
+}
+
+// ---------------------------------------------------------------------------
+// App-wide custom tokens (semantic colors not covered by the M3 role system)
+// ---------------------------------------------------------------------------
+:root {
+  --app-positive: light-dark(#2e7d32, #7fd97f);
+  --app-negative: light-dark(#c62828, #ff8a80);
+  --app-max-content-width: 1200px;
+  --app-header-height: 64px;
+}
+
+// ---------------------------------------------------------------------------
+// Resets & base layout
+// ---------------------------------------------------------------------------
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-shell-content {
+  max-width: var(--app-max-content-width);
+  margin: 0 auto;
+  padding: 24px 24px 48px;
+}
+
+.numeric-cell {
+  font-family: 'Roboto Mono', ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.amount-positive {
+  color: var(--app-positive);
+  font-weight: 500;
+}
+
+.amount-negative {
+  color: var(--app-negative);
+  font-weight: 500;
+}
+
+// Material table full-bleed on very narrow screens
+@media (max-width: 640px) {
+  .app-shell-content {
+    padding: 12px 12px 32px;
+  }
+}

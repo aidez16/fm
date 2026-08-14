@@ -1,0 +1,86 @@
+.state-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 64px 24px;
+  text-align: center;
+  color: var(--mat-sys-on-surface-variant);
+
+  mat-icon {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.state-panel--error {
+  color: var(--app-negative);
+
+  p {
+    color: var(--mat-sys-on-surface);
+  }
+}
+
+.cards-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.table-card {
+  background: var(--mat-sys-surface-container);
+  border-radius: 16px;
+  padding: 8px 8px 16px;
+  overflow: hidden;
+}
+
+.table-card__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 16px 16px 8px;
+
+  h2 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+}
+
+.table-card__filter {
+  width: 260px;
+  max-width: 100%;
+}
+
+.table-card__scroll {
+  overflow-x: auto;
+}
+
+.summary-table {
+  width: 100%;
+}
+
+.numeric-header {
+  text-align: right;
+}
+
+.no-results {
+  text-align: center;
+  padding: 32px !important;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.table-card__footnote {
+  margin: 12px 16px 0;
+  font-size: 0.75rem;
+  color: var(--mat-sys-on-surface-variant);
+}

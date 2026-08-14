@@ -1,0 +1,47 @@
+# Fixed-width record layouts, keyed by record code (positions 1-3 of every line).
+# Adding a record type is an entry here, not a new parser class.
+#
+# Positions are 1-indexed and inclusive, as in the System A file specification.
+#
+# The "schemas" key is required: Spring binds @ConfigurationProperties onto the
+# field of that name in RecordSchemaRegistry, not directly onto the map.
+record-schemas:
+  schemas:
+    "315":
+      name: PROCESSED_FUTURE_MOVEMENT
+      totalLength: 303
+      fields:
+        - { name: RECORD_CODE,             start: 1,   end: 3   }
+        - { name: CLIENT_TYPE,             start: 4,   end: 7   }
+        - { name: CLIENT_NUMBER,           start: 8,   end: 11  }
+        - { name: ACCOUNT_NUMBER,          start: 12,  end: 15  }
+        - { name: SUBACCOUNT_NUMBER,       start: 16,  end: 19  }
+        - { name: OPPOSITE_PARTY_CODE,     start: 20,  end: 25  }
+        - { name: PRODUCT_GROUP_CODE,      start: 26,  end: 27  }
+        - { name: EXCHANGE_CODE,           start: 28,  end: 31  }
+        - { name: SYMBOL,                  start: 32,  end: 37  }
+        - { name: EXPIRATION_DATE,         start: 38,  end: 45  }
+        - { name: CURRENCY_CODE,           start: 46,  end: 48  }
+        - { name: MOVEMENT_CODE,           start: 49,  end: 50  }
+        - { name: BUY_SELL_CODE,           start: 51,  end: 51  }
+        - { name: QUANTITY_LONG_SIGN,      start: 52,  end: 52  }
+        - { name: QUANTITY_LONG,           start: 53,  end: 62  }
+        - { name: QUANTITY_SHORT_SIGN,     start: 63,  end: 63  }
+        - { name: QUANTITY_SHORT,          start: 64,  end: 73  }
+        - { name: EXCH_BROKER_FEE,         start: 74,  end: 85  }
+        - { name: EXCH_BROKER_FEE_DC,      start: 86,  end: 86  }
+        - { name: EXCH_BROKER_FEE_CUR,     start: 87,  end: 89  }
+        - { name: CLEARING_FEE,            start: 90,  end: 101 }
+        - { name: CLEARING_FEE_DC,         start: 102, end: 102 }
+        - { name: CLEARING_FEE_CUR,        start: 103, end: 105 }
+        - { name: COMMISSION,              start: 106, end: 117 }
+        - { name: COMMISSION_DC,           start: 118, end: 118 }
+        - { name: COMMISSION_CUR,          start: 119, end: 121 }
+        - { name: TRANSACTION_DATE,        start: 122, end: 129 }
+        - { name: FUTURE_REFERENCE,        start: 130, end: 135 }
+        - { name: TICKET_NUMBER,           start: 136, end: 141 }
+        - { name: EXTERNAL_NUMBER,         start: 142, end: 147 }
+        - { name: TRANSACTION_PRICE,       start: 148, end: 162 }
+        - { name: TRADER_INITIALS,         start: 163, end: 168 }
+        - { name: OPPOSITE_TRADER_ID,      start: 169, end: 175 }
+        - { name: OPEN_CLOSE_CODE,         start: 176, end: 176 }

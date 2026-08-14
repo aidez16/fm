@@ -1,0 +1,91 @@
+<app-toolbar (refresh)="refresh()" (downloadCsv)="downloadCsv()" />
+
+<main class="app-shell-content">
+  <!-- Loading -->
+  @if (store.isLoading() && store.rows().length === 0) {
+    <div class="state-panel">
+      <mat-spinner diameter="40" />
+      <p>Loading today's summary…</p>
+    </div>
+  }
+
+  <!-- Error -->
+  @if (store.hasError()) {
+    <div class="state-panel state-panel--error">
+      <mat-icon aria-hidden="true">error_outline</mat-icon>
+      <p>{{ store.errorMessage() }}</p>
+      <button mat-flat-button type="button" (click)="refresh()">
+        <mat-icon>refresh</mat-icon>
+        Try again
+      </button>
+    </div>
+  }
+
+  <!-- Loaded (with or without rows) -->
+  @if (store.state() === 'loaded' || (store.isLoading() && store.rows().length > 0)) {
+    <section class="cards-row">
+      <app-stat-card icon="groups" label="Client Accounts" [value]="(store.distinctClientCount() | number) ?? '0'" />
+      <app-stat-card icon="category" label="Products Traded" [value]="(store.distinctProductCount() | number) ?? '0'" />
+      <app-stat-card
+        icon="functions"
+        label="Net Total (All Products)"
+        [value]="(store.netTotal() | number: '1.0-2') ?? '0'"
+        [tone]="netTotalTone()"
+      />
+    </section>
+
+    @if (store.isEmpty()) {
+      <div class="state-panel">
+        <mat-icon aria-hidden="true">inbox</mat-icon>
+        <p>No transactions found for today.</p>
+      </div>
+    } @else {
+      <section class="table-card">
+        <div class="table-card__toolbar">
+          <h2>Client &amp; Product Summary</h2>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="table-card__filter">
+            <mat-label>Filter</mat-label>
+            <input matInput placeholder="Search client or product…" (keyup)="applyFilter($event)" />
+            <mat-icon matPrefix aria-hidden="true">search</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <div class="table-card__scroll">
+          <table mat-table [dataSource]="dataSource" matSort class="summary-table">
+            <ng-container matColumnDef="clientInformation">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Client Information</th>
+              <td mat-cell *matCellDef="let row">{{ row.clientInformation }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="productInformation">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Product Information</th>
+              <td mat-cell *matCellDef="let row">{{ row.productInformation }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="totalTransactionAmount">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="numeric-header">
+                Total Transaction Amount
+              </th>
+              <td mat-cell *matCellDef="let row" class="numeric-cell" [ngClass]="amountClass(row.totalTransactionAmount)">
+                {{ row.totalTransactionAmount | number: '1.0-2' }}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell no-results" [attr.colspan]="displayedColumns.length">
+                No rows match your filter.
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        @if (store.lastLoadedAt(); as loadedAt) {
+          <p class="table-card__footnote">Last refreshed {{ loadedAt | date: 'medium' }}</p>
+        }
+      </section>
+    }
+  }
+</main>

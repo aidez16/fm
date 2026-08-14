@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: future-movement-summary
+  config:
+    import: classpath:record-schemas.yml
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: future-movement-summary
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+server:
+  port: 8080
+
+futuremovement:
+  # Read at startup by the topic seeder and by SummaryCsvFileWriter.
+  input-file-path: classpath:data/Input.txt
+  output:
+    # Relative to the working directory, which is backend/ under bootRun -
+    # hence the "../". docker-compose overrides it with an absolute path.
+    enabled: ${FUTUREMOVEMENT_OUTPUT_ENABLED:true}
+    file-path: ${FUTUREMOVEMENT_OUTPUT_FILE_PATH:../sample-output/Output.csv}
+  kafka:
+    topic: ${FUTUREMOVEMENT_KAFKA_TOPIC:future-movements}
+    partitions: 3
+    # Nothing else produces to the topic in this demo. Set false when a real
+    # producer feeds it instead.
+    seed-on-startup: ${FUTUREMOVEMENT_KAFKA_SEED_ON_STARTUP:true}
+  cors:
+    allowed-origin: ${FUTUREMOVEMENT_CORS_ORIGIN:http://localhost:4200}
